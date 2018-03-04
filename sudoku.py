@@ -3,7 +3,7 @@
 """
 Created on Fri Feb 16 21:32:44 2018
 
-@author: shenov
+@author: zahoornovman
 """
 
 def printing_my_sudoku():
