@@ -6,32 +6,6 @@ Created on Fri Feb 16 21:32:44 2018
 @author: zahoornovman
 """
 
-def printing_my_sudoku():
-    print ('____________')
-    for line in range(9):
-        x='|'
-        for element in range(9):
-            if type(sud[line][element]) == list:
-                x= x+' '
-            else:
-                x=x+sud[line][element]
-            if element == 2 or element == 5:
-                x=x+'|'
-        print (x+'|')
-        if line == 2 or line ==5:
-            print ('|-----------|')
-    print (' -----------')
-
-
-def replace_nones(sud):
-    '''
-    Replace every empty str in entire sudoku puzzle to an empty list
-    '''
-    for List in sud:
-        for value in range(9):
-            if List[value] == '':
-                List[value]= []
-    return sud
 
 
 
@@ -48,6 +22,34 @@ def read_file(sudoku_file):
         sud.append(line.split(sep=','))
     f.close()
     return sud
+
+
+def replace_nones(sud):
+    '''
+    Replace every empty str in entire sudoku puzzle to an empty list
+    '''
+    for List in sud:
+        for value in range(9):
+            if List[value] == '':
+                List[value]= []
+    return sud
+
+def printing_my_sudoku():
+    print ('____________')
+    for line in range(9):
+        x='|'
+        for element in range(9):
+            if type(sud[line][element]) == list:
+                x= x+' '
+            else:
+                x=x+sud[line][element]
+            if element == 2 or element == 5:
+                x=x+'|'
+        print (x+'|')
+        if line == 2 or line ==5:
+            print ('|-----------|')
+    print (' -----------')
+
 
 
 
@@ -88,6 +90,20 @@ def compare_two_lists(old_possible_values,new_possible_values):
     elif old_possible_values > []:
         x =  list(set(old_possible_values).intersection(new_possible_values))
     return x
+ 
+def comparing_vertical_columns():
+    line = []
+    #for loop to access every vertical line(column) in sudoku
+    for column in range(9):
+        #for loop to access row of each column in sudoku
+        for row in range(9):
+            line.append(sud[row][column])
+       # print(line)
+        comparing_a_row(line)
+        for i in range(9):
+            sud[i][column] = line[i]      
+       #print(line)
+        line=[]
     
 
 if __name__=='__main__':                   
@@ -97,7 +113,9 @@ if __name__=='__main__':
     printing_my_sudoku()
     
     for line in range(9):
-        comparing_a_row(sud[line])
+       comparing_a_row(sud[line])
+       
+    comparing_vertical_columns()  
+      
     #printing after first execution 
     printing_my_sudoku()
-
