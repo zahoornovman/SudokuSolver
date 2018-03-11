@@ -6,6 +6,7 @@ Created on Fri Feb 16 21:32:44 2018
 @author: zahoornovman
 """
 
+import copy
 
 
 
@@ -60,23 +61,21 @@ def comparing_a_row(line):
     possible values to the indexs consisting of lists
     Question: what if they are lists within the list  
     '''
-    l = len(line)+1
     possible_values = []
-    for i in range(1,l):
+    for i in range(1,10):
         if str(i) not in line:
             possible_values.append(str(i))
     # possible_values has to not be empty to account for lines that already have all values
     if possible_values > []: 
-        for index in range(len(line)):
+        for index in range(9):
             # if element in for loop is a list
             if type(line[index]) == list:
                x= compare_two_lists(line[index],possible_values) 
                line[index] = x
                # if length of new possible value list is 1,
                # then we convert list to int type
-               if len(line[index]) == len(range(1)):
+               if len(line[index]) is 1:
                    line[index] = line[index][0]
-    #print(line)
 
 
 def compare_two_lists(old_possible_values,new_possible_values):
@@ -105,17 +104,49 @@ def comparing_vertical_columns():
        #print(line)
         line=[]
     
+def comparing_horizontal_rows():
+        for line in range(9):
+            comparing_a_row(sud[line])
+
+   
+def comparing_one_block(column,row):      
+    temp_line = []
+    for x in column:
+        for y in row:
+            temp_line.append(sud[x][y])
+        #print(temp_line)
+    comparing_a_row(temp_line)
+    index=0
+    for x in column:
+        for y in row:
+            sud[x][y]=temp_line[index]
+            index += 1     
+    temp_line = []
+   
+def comparing_blocks():
+    indexes=[[0,1,2],[3,4,5],[6,7,8]]
+    for x in indexes:
+        for y in indexes:
+            comparing_one_block(x,y)         
+
 
 if __name__=='__main__':                   
-    sud = read_file("SudokuProblem.csv")
+    sud = read_file("../Data/SudokuSolver_Medium1.csv")
     replace_nones(sud)
     # intial printing
     printing_my_sudoku()
-    
-    for line in range(9):
-       comparing_a_row(sud[line])
-       
-    comparing_vertical_columns()  
+    loops =0      
+    while True:
+        temp_sud = copy.deepcopy(sud)
+        comparing_horizontal_rows()
+        comparing_vertical_columns()
+        comparing_blocks()
+        if temp_sud == sud:
+            break 
+        loops +=1
+        continue
+    print(loops)
+
       
     #printing after first execution 
     printing_my_sudoku()
